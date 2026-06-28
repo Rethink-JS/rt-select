@@ -1,4 +1,4 @@
-/*! @rethink-js/rt-* v1.0.0 | MIT */
+/*! @rethink-js/rt-select v1.0.0 | MIT */
 (() => {
   // src/index.js
   (function() {
