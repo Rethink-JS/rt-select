@@ -1,0 +1,36 @@
+{
+  "name": "@rethink-js/rt-*",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "javascript",
+    "rethink-js"
+  ],
+  "author": "Rethink JS <opensource@rethink-js.org> (https://github.com/Rethink-JS)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rethink-JS/rt-*.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rethink-JS/rt-*/issues"
+  },
+  "homepage": "https://github.com/Rethink-JS/rt-*#readme",
+  "main": "dist/index.js",
+  "unpkg": "dist/index.min.js",
+  "jsdelivr": "dist/index.min.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.2"
+  }
+}
