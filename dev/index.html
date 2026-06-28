@@ -17,10 +17,13 @@
         --text: #111111;
         --text-muted: #6b665c;
         --border: #ded8ca;
+        --border-strong: #bfb5a2;
         --border-dark: #2e2e2e;
+        --radius-xl: 30px;
         --radius-lg: 24px;
         --radius-md: 16px;
         --shadow-soft: 0 22px 70px rgba(17, 17, 17, 0.08);
+        --shadow-tight: 0 14px 36px rgba(17, 17, 17, 0.08);
       }
 
       html {
@@ -40,7 +43,7 @@
       }
 
       main {
-        width: min(100%, 1120px);
+        width: min(100%, 1180px);
         margin: 0 auto;
         padding: 56px 20px 80px;
       }
@@ -69,7 +72,7 @@
       }
 
       h3 {
-        margin: 0 0 12px;
+        margin: 0;
         font-size: 14px;
         line-height: 1.2;
         letter-spacing: -0.015em;
@@ -90,7 +93,7 @@
       }
 
       .lead {
-        max-width: 720px;
+        max-width: 760px;
         color: var(--text-muted);
         font-size: 17px;
         line-height: 1.65;
@@ -185,6 +188,11 @@
         color: #ffffff;
       }
 
+      .card.square-card {
+        border-radius: 0;
+        box-shadow: var(--shadow-tight);
+      }
+
       .card p {
         margin: 0 0 18px;
         color: var(--text-muted);
@@ -194,6 +202,46 @@
 
       .card.dark p {
         color: #a7a7a7;
+      }
+
+      .section-heading {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: end;
+        margin-top: 10px;
+        padding: 18px 2px 0;
+      }
+
+      .section-heading:first-child {
+        margin-top: 0;
+      }
+
+      .section-heading p {
+        max-width: 720px;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .style-label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border: 1px solid var(--border-strong);
+        border-radius: 999px;
+        padding: 5px 10px;
+        color: #4b4439;
+        font-size: 11px;
+        font-weight: 760;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .style-label.square {
+        border-radius: 0;
       }
 
       .field {
@@ -228,6 +276,10 @@
         white-space: nowrap;
       }
 
+      .badge.square {
+        border-radius: 0;
+      }
+
       .dark .badge {
         background: #242424;
         color: #d8d8d8;
@@ -251,6 +303,11 @@
         word-break: break-word;
       }
 
+      .square-card .output,
+      .native-box.square .output {
+        border-radius: 0;
+      }
+
       .dark .output {
         background: #171717;
         border-color: #303030;
@@ -268,6 +325,10 @@
         background: var(--surface-soft);
         border: 1px solid #e8e0d0;
         border-radius: var(--radius-md);
+      }
+
+      .native-box.square {
+        border-radius: 0;
       }
 
       .code-panel {
@@ -314,6 +375,10 @@
           grid-column: 1 / -1;
         }
 
+        .section-heading {
+          grid-template-columns: 1fr;
+        }
+
         .native-compare {
           grid-template-columns: 1fr;
         }
@@ -347,6 +412,14 @@
       </div>
 
       <section class="grid">
+        <div class="section-heading">
+          <div>
+            <h2>Rounded dropdowns</h2>
+            <p>These examples use curved select controls, rounded dropdown panels and pill-like selected tags.</p>
+          </div>
+          <span class="style-label">curved radius</span>
+        </div>
+
         <article class="card">
           <h2>Default smart select</h2>
           <p>Uses the package default. Single selects are custom on Windows and native on macOS, iOS and Android.</p>
@@ -380,8 +453,8 @@
               data-rt-select-search="true"
               data-rt-select-search-placeholder="Search components"
               data-rt-select-placeholder-value="Choose component"
-              data-rt-select-radius="14"
-              data-rt-select-dropdown-radius="16"
+              data-rt-select-radius="18"
+              data-rt-select-dropdown-radius="22"
               data-rt-select-focus="#111111"
               data-rt-select-highlight-bg="#f0eee6"
               data-rt-select-selected-bg="#e6e0d1"
@@ -400,7 +473,7 @@
         </article>
 
         <article class="card dark">
-          <h2>Dark theme</h2>
+          <h2>Dark rounded theme</h2>
           <p>Tests custom colours, dark surfaces, custom dropdown styling and search.</p>
 
           <div class="field">
@@ -422,8 +495,8 @@
               data-rt-select-selected-bg="#333333"
               data-rt-select-selected-color="#ffffff"
               data-rt-select-arrow="#ffffff"
-              data-rt-select-radius="14"
-              data-rt-select-dropdown-radius="16"
+              data-rt-select-radius="18"
+              data-rt-select-dropdown-radius="22"
               data-rt-select-dropdown-shadow="0 18px 44px rgba(0,0,0,.42)"
             >
               <option value="">Choose channel</option>
@@ -438,42 +511,8 @@
         </article>
 
         <article class="card">
-          <h2>Platform targeting</h2>
-          <p>Tests platform-level opt-in using <code>data-rt-select-platforms</code>.</p>
-
-          <div class="field">
-            <label for="demo-platform">Target platform <span class="badge">platforms: apple</span></label>
-            <select
-              id="demo-platform"
-              name="demo-platform"
-              data-rt-select
-              data-rt-select-id="demo-platform"
-              data-rt-select-platforms="apple"
-              data-rt-select-search="false"
-              data-rt-select-bg="#fffaf2"
-              data-rt-select-dropdown-bg="#fffaf2"
-              data-rt-select-text="#2a1800"
-              data-rt-select-border="#e0c28b"
-              data-rt-select-focus="#9b5c00"
-              data-rt-select-highlight-bg="#f6e3bf"
-              data-rt-select-selected-bg="#edd19d"
-              data-rt-select-radius="14"
-              data-rt-select-dropdown-radius="16"
-            >
-              <option value="">Choose platform</option>
-              <option value="windows">Windows</option>
-              <option value="macos">macOS</option>
-              <option value="ios">iOS</option>
-              <option value="android">Android</option>
-              <option value="linux">Linux</option>
-            </select>
-            <div class="output" data-output="demo-platform">Value: —</div>
-          </div>
-        </article>
-
-        <article class="card full">
-          <h2>Multi-select</h2>
-          <p>Multi-select fields are always upgraded because the native multi-select control is inconsistent across browsers.</p>
+          <h2>Rounded multi-select</h2>
+          <p>Multi-select fields are always upgraded. This one uses rounded inputs and pill tags.</p>
 
           <div class="field">
             <label for="demo-multi">Features <span class="badge">always custom</span></label>
@@ -499,8 +538,9 @@
               data-rt-select-tag-bg="#6840c6"
               data-rt-select-tag-color="#ffffff"
               data-rt-select-tag-border="#6840c6"
-              data-rt-select-radius="16"
-              data-rt-select-dropdown-radius="16"
+              data-rt-select-radius="18"
+              data-rt-select-dropdown-radius="22"
+              data-rt-select-tag-radius="999"
               data-rt-select-dropdown-max-height="230"
               data-rt-select-chip-gap="7"
               data-rt-select-chip-padding-x="10"
@@ -520,6 +560,184 @@
             <div class="output" data-output="demo-multi">Value: —</div>
           </div>
         </article>
+
+        <div class="section-heading">
+          <div>
+            <h2>Square dropdowns</h2>
+            <p>These examples set every radius to <code>0</code>, including the dropdown, item radius and multi-select tags.</p>
+          </div>
+          <span class="style-label square">0 radius</span>
+        </div>
+
+        <article class="card square-card">
+          <h2>Square single select</h2>
+          <p>Uses the same package API, but with a strict zero-radius visual system.</p>
+
+          <div class="field">
+            <label for="demo-square">Configuration <span class="badge square">radius: 0</span></label>
+            <select
+              id="demo-square"
+              name="demo-square"
+              data-rt-select="all"
+              data-rt-select-id="demo-square"
+              data-rt-select-search="true"
+              data-rt-select-search-placeholder="Search configuration"
+              data-rt-select-placeholder-value="Choose configuration"
+              data-rt-select-bg="#ffffff"
+              data-rt-select-dropdown-bg="#ffffff"
+              data-rt-select-text="#111111"
+              data-rt-select-border="#111111"
+              data-rt-select-focus="#111111"
+              data-rt-select-highlight-bg="#eeeeee"
+              data-rt-select-selected-bg="#dddddd"
+              data-rt-select-radius="0"
+              data-rt-select-dropdown-radius="0"
+              data-rt-select-item-radius="0"
+              data-rt-select-dropdown-shadow="none"
+            >
+              <option value="">Choose configuration</option>
+              <option value="default">Default behaviour</option>
+              <option value="custom-all">Custom on all platforms</option>
+              <option value="platform-targeted">Platform targeted</option>
+              <option value="native-only">Native only</option>
+              <option value="multi-select">Multi-select</option>
+            </select>
+            <div class="output" data-output="demo-square">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card square-card">
+          <h2>Square multi-select</h2>
+          <p>Zero-radius multi-select with squared chips and a flat dropdown panel.</p>
+
+          <div class="field">
+            <label for="demo-square-multi">Options <span class="badge square">chips: 0</span></label>
+            <select
+              id="demo-square-multi"
+              name="demo-square-multi"
+              multiple
+              placeholder="Choose options"
+              data-rt-select
+              data-rt-select-id="demo-square-multi"
+              data-rt-select-search="true"
+              data-rt-select-remove-item-button="true"
+              data-rt-select-placeholder-value="Choose options"
+              data-rt-select-search-placeholder="Search options"
+              data-rt-select-bg="#ffffff"
+              data-rt-select-dropdown-bg="#ffffff"
+              data-rt-select-text="#111111"
+              data-rt-select-border="#111111"
+              data-rt-select-focus="#111111"
+              data-rt-select-highlight-bg="#eeeeee"
+              data-rt-select-highlight-color="#111111"
+              data-rt-select-selected-bg="#dddddd"
+              data-rt-select-selected-color="#111111"
+              data-rt-select-tag-bg="#111111"
+              data-rt-select-tag-color="#ffffff"
+              data-rt-select-tag-border="#111111"
+              data-rt-select-radius="0"
+              data-rt-select-dropdown-radius="0"
+              data-rt-select-item-radius="0"
+              data-rt-select-tag-radius="0"
+              data-rt-select-dropdown-shadow="none"
+              data-rt-select-chip-gap="6"
+              data-rt-select-chip-padding-x="9"
+              data-rt-select-chip-padding-y="6"
+            >
+              <option value="select-one">Single select</option>
+              <option value="select-multiple">Multiple select</option>
+              <option value="search">Search</option>
+              <option value="custom-colours">Custom colours</option>
+              <option value="zero-radius">Zero radius</option>
+              <option value="dynamic-options">Dynamic options</option>
+              <option value="validation">Validation</option>
+              <option value="destroy-init">Destroy / init</option>
+            </select>
+            <div class="output" data-output="demo-square-multi">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card square-card dark">
+          <h2>Square dark theme</h2>
+          <p>Dark custom select with no rounded corners and no dropdown shadow.</p>
+
+          <div class="field">
+            <label for="demo-square-dark">Theme <span class="badge square">flat dark</span></label>
+            <select
+              id="demo-square-dark"
+              name="demo-square-dark"
+              data-rt-select="all"
+              data-rt-select-id="demo-square-dark"
+              data-rt-select-search="false"
+              data-rt-select-bg="#101010"
+              data-rt-select-dropdown-bg="#101010"
+              data-rt-select-text="#ffffff"
+              data-rt-select-placeholder-color="#999999"
+              data-rt-select-border="#ffffff"
+              data-rt-select-focus="#ffffff"
+              data-rt-select-highlight-bg="#ffffff"
+              data-rt-select-highlight-color="#101010"
+              data-rt-select-selected-bg="#ffffff"
+              data-rt-select-selected-color="#101010"
+              data-rt-select-arrow="#ffffff"
+              data-rt-select-radius="0"
+              data-rt-select-dropdown-radius="0"
+              data-rt-select-item-radius="0"
+              data-rt-select-dropdown-shadow="none"
+            >
+              <option value="">Choose theme</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="flat">Flat</option>
+              <option value="contrast">High contrast</option>
+            </select>
+            <div class="output" data-output="demo-square-dark">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card square-card">
+          <h2>Platform targeting</h2>
+          <p>Tests platform-level opt-in using <code>data-rt-select-platforms</code>.</p>
+
+          <div class="field">
+            <label for="demo-platform">Target platform <span class="badge square">platforms: apple</span></label>
+            <select
+              id="demo-platform"
+              name="demo-platform"
+              data-rt-select
+              data-rt-select-id="demo-platform"
+              data-rt-select-platforms="apple"
+              data-rt-select-search="false"
+              data-rt-select-bg="#fffaf2"
+              data-rt-select-dropdown-bg="#fffaf2"
+              data-rt-select-text="#2a1800"
+              data-rt-select-border="#2a1800"
+              data-rt-select-focus="#2a1800"
+              data-rt-select-highlight-bg="#f6e3bf"
+              data-rt-select-selected-bg="#edd19d"
+              data-rt-select-radius="0"
+              data-rt-select-dropdown-radius="0"
+              data-rt-select-item-radius="0"
+              data-rt-select-dropdown-shadow="none"
+            >
+              <option value="">Choose platform</option>
+              <option value="windows">Windows</option>
+              <option value="macos">macOS</option>
+              <option value="ios">iOS</option>
+              <option value="android">Android</option>
+              <option value="linux">Linux</option>
+            </select>
+            <div class="output" data-output="demo-platform">Value: —</div>
+          </div>
+        </article>
+
+        <div class="section-heading">
+          <div>
+            <h2>Behaviour checks</h2>
+            <p>Grouped options, validation states and native comparison fields for quick regression checks.</p>
+          </div>
+          <span class="style-label">tests</span>
+        </div>
 
         <article class="card">
           <h2>Grouped options</h2>
@@ -624,7 +842,7 @@
               </select>
             </div>
 
-            <div class="native-box">
+            <div class="native-box square">
               <h3>Native multi-select</h3>
               <select id="native-multi" multiple size="5">
                 <option value="alpha">Alpha</option>
@@ -654,11 +872,14 @@
           "demo-default",
           "demo-custom",
           "demo-dark",
-          "demo-platform",
           "demo-multi",
+          "demo-square",
+          "demo-square-multi",
+          "demo-square-dark",
+          "demo-platform",
           "demo-grouped",
           "demo-required",
-          "demo-disabled",
+          "demo-disabled"
         ];
 
         function formatValue(value) {
@@ -730,10 +951,10 @@
                   platform: window.rtSelect.platform ? window.rtSelect.platform() : null,
                   ids: window.rtSelect.ids ? window.rtSelect.ids() : [],
                   skipped: window.rtSelect.skipped ? window.rtSelect.skipped() : [],
-                  errors: window.rtSelect.errors ? window.rtSelect.errors() : [],
+                  errors: window.rtSelect.errors ? window.rtSelect.errors() : []
                 }
               : null,
-            values: {},
+            values: {}
           };
 
           ids.forEach(function (id) {
@@ -768,8 +989,11 @@
           setRtValue("demo-default", "rt-select", true);
           setRtValue("demo-custom", "dropdown", true);
           setRtValue("demo-dark", "stable", true);
-          setRtValue("demo-platform", "macos", true);
           setRtValue("demo-multi", ["windows-upgrade", "multi-select", "theming"], true);
+          setRtValue("demo-square", "zero-radius", true);
+          setRtValue("demo-square-multi", ["select-multiple", "zero-radius", "custom-colours"], true);
+          setRtValue("demo-square-dark", "contrast", true);
+          setRtValue("demo-platform", "macos", true);
           setRtValue("demo-grouped", "api", true);
           setRtValue("demo-required", "in-progress", true);
           updateEverything();
@@ -779,8 +1003,11 @@
           setRtValue("demo-default", "", true);
           setRtValue("demo-custom", "", true);
           setRtValue("demo-dark", "", true);
-          setRtValue("demo-platform", "", true);
           setRtValue("demo-multi", [], true);
+          setRtValue("demo-square", "", true);
+          setRtValue("demo-square-multi", [], true);
+          setRtValue("demo-square-dark", "", true);
+          setRtValue("demo-platform", "", true);
           setRtValue("demo-grouped", "", true);
           setRtValue("demo-required", "", true);
           updateEverything();
