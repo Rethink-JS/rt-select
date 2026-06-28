@@ -1,21 +1,30 @@
 {
-  "name": "@rethink-js/rt-*",
+  "name": "@rethink-js/rt-select",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lightweight select enhancement package that upgrades native select fields with a customizable Choices.js-powered dropdown when needed.",
   "keywords": [
     "javascript",
-    "rethink-js"
+    "rethink-js",
+    "select",
+    "dropdown",
+    "choices",
+    "choices-js",
+    "custom-select",
+    "multi-select",
+    "form",
+    "windows",
+    "native-fallback"
   ],
   "author": "Rethink JS <opensource@rethink-js.org> (https://github.com/Rethink-JS)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rethink-JS/rt-*.git"
+    "url": "git+https://github.com/Rethink-JS/rt-select.git"
   },
   "bugs": {
-    "url": "https://github.com/Rethink-JS/rt-*/issues"
+    "url": "https://github.com/Rethink-JS/rt-select/issues"
   },
-  "homepage": "https://github.com/Rethink-JS/rt-*#readme",
+  "homepage": "https://github.com/Rethink-JS/rt-select#readme",
   "main": "dist/index.js",
   "unpkg": "dist/index.min.js",
   "jsdelivr": "dist/index.min.js",
