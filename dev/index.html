@@ -1,1 +1,836 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rt-select Dev Demo</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
+      :root {
+        --page-bg: #f4f1ea;
+        --surface: #ffffff;
+        --surface-soft: #faf8f2;
+        --surface-dark: #101010;
+        --text: #111111;
+        --text-muted: #6b665c;
+        --border: #ded8ca;
+        --border-dark: #2e2e2e;
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --shadow-soft: 0 22px 70px rgba(17, 17, 17, 0.08);
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--page-bg);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.92), transparent 34rem),
+          radial-gradient(circle at 88% 8%, rgba(209, 183, 126, 0.28), transparent 30rem),
+          var(--page-bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(100%, 1120px);
+        margin: 0 auto;
+        padding: 56px 20px 80px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0 0 14px;
+        font-size: clamp(48px, 8vw, 108px);
+        line-height: 0.86;
+        letter-spacing: -0.08em;
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.15;
+        letter-spacing: -0.035em;
+      }
+
+      h3 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        line-height: 1.2;
+        letter-spacing: -0.015em;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      code {
+        display: inline-block;
+        border-radius: 7px;
+        background: rgba(17, 17, 17, 0.06);
+        padding: 2px 6px;
+        color: inherit;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 0.88em;
+      }
+
+      .lead {
+        max-width: 720px;
+        color: var(--text-muted);
+        font-size: 17px;
+        line-height: 1.65;
+      }
+
+      .status-card {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.68);
+        border: 1px solid rgba(222, 216, 202, 0.9);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(14px);
+      }
+
+      .status-label {
+        margin-bottom: 8px;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .status-value {
+        white-space: pre-wrap;
+        color: #292722;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 24px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(222, 216, 202, 0.95);
+        border-radius: 999px;
+        backdrop-filter: blur(18px);
+        box-shadow: 0 18px 54px rgba(17, 17, 17, 0.08);
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid #111111;
+        border-radius: 999px;
+        background: #111111;
+        color: #ffffff;
+        padding: 10px 15px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 720;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: transparent;
+        color: #111111;
+      }
+
+      button.danger {
+        border-color: #b42318;
+        background: #b42318;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        grid-column: span 6;
+        min-width: 0;
+        padding: 22px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .card.full {
+        grid-column: 1 / -1;
+      }
+
+      .card.dark {
+        background: var(--surface-dark);
+        border-color: var(--border-dark);
+        color: #ffffff;
+      }
+
+      .card p {
+        margin: 0 0 18px;
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.62;
+      }
+
+      .card.dark p {
+        color: #a7a7a7;
+      }
+
+      .field {
+        margin-bottom: 16px;
+      }
+
+      .field:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 9px;
+        color: inherit;
+        font-size: 13px;
+        font-weight: 760;
+        letter-spacing: -0.01em;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: #efebe0;
+        color: #575044;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 720;
+        white-space: nowrap;
+      }
+
+      .dark .badge {
+        background: #242424;
+        color: #d8d8d8;
+      }
+
+      select {
+        width: 100%;
+        min-height: 44px;
+      }
+
+      .output {
+        margin-top: 12px;
+        padding: 12px 13px;
+        background: var(--surface-soft);
+        border: 1px solid #e8e0d0;
+        border-radius: 14px;
+        color: #4d473d;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        word-break: break-word;
+      }
+
+      .dark .output {
+        background: #171717;
+        border-color: #303030;
+        color: #e8e8e8;
+      }
+
+      .native-compare {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .native-box {
+        padding: 16px;
+        background: var(--surface-soft);
+        border: 1px solid #e8e0d0;
+        border-radius: var(--radius-md);
+      }
+
+      .code-panel {
+        grid-column: 1 / -1;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .code-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      pre {
+        max-height: 380px;
+        margin: 0;
+        overflow: auto;
+        padding: 20px;
+        background: #101010;
+        color: #eeeeee;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      @media (max-width: 860px) {
+        main {
+          padding: 40px 16px 64px;
+        }
+
+        header {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          border-radius: var(--radius-lg);
+        }
+
+        .card {
+          grid-column: 1 / -1;
+        }
+
+        .native-compare {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>rt-select</h1>
+          <p class="lead">
+            Development demo for the RethinkJS select enhancement package. Single selects use the native control by default on macOS, iOS and Android, custom Choices.js on Windows, and custom everywhere when explicitly enabled. Multi-selects are always upgraded.
+          </p>
+        </div>
+
+        <aside class="status-card">
+          <div class="status-label">Runtime status</div>
+          <p class="status-value" data-runtime-status>Waiting for rt-select...</p>
+        </aside>
+      </header>
+
+      <div class="toolbar">
+        <button type="button" data-action="set-demo-values">Set demo values</button>
+        <button type="button" class="secondary" data-action="clear-values">Clear values</button>
+        <button type="button" class="secondary" data-action="refresh">Refresh</button>
+        <button type="button" class="secondary" data-action="add-option">Add option</button>
+        <button type="button" class="danger" data-action="destroy">Destroy</button>
+        <button type="button" class="secondary" data-action="init">Init again</button>
+      </div>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Default smart select</h2>
+          <p>Uses the package default. Single selects are custom on Windows and native on macOS, iOS and Android.</p>
+
+          <div class="field">
+            <label for="demo-default">Package <span class="badge">default</span></label>
+            <select id="demo-default" name="demo-default" data-rt-select data-rt-select-id="demo-default">
+              <option value="">Choose package</option>
+              <option value="rt-select">rt-select</option>
+              <option value="rt-slider">rt-slider</option>
+              <option value="rt-tabs">rt-tabs</option>
+              <option value="rt-accordion">rt-accordion</option>
+              <option value="rt-modal">rt-modal</option>
+            </select>
+            <div class="output" data-output="demo-default">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Forced custom select</h2>
+          <p>Uses Choices.js everywhere with <code>data-rt-select-mode="all"</code>.</p>
+
+          <div class="field">
+            <label for="demo-custom">Component type <span class="badge">mode: all</span></label>
+            <select
+              id="demo-custom"
+              name="demo-custom"
+              data-rt-select
+              data-rt-select-id="demo-custom"
+              data-rt-select-mode="all"
+              data-rt-select-search="true"
+              data-rt-select-search-placeholder="Search components"
+              data-rt-select-placeholder-value="Choose component"
+              data-rt-select-radius="14"
+              data-rt-select-dropdown-radius="16"
+              data-rt-select-focus="#111111"
+              data-rt-select-highlight-bg="#f0eee6"
+              data-rt-select-selected-bg="#e6e0d1"
+            >
+              <option value="">Choose component</option>
+              <option value="dropdown">Dropdown</option>
+              <option value="slider">Slider</option>
+              <option value="tabs">Tabs</option>
+              <option value="accordion">Accordion</option>
+              <option value="modal">Modal</option>
+              <option value="tooltip">Tooltip</option>
+              <option value="filter">Filter</option>
+            </select>
+            <div class="output" data-output="demo-custom">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card dark">
+          <h2>Dark theme</h2>
+          <p>Tests custom colours, dark surfaces, custom dropdown styling and search.</p>
+
+          <div class="field">
+            <label for="demo-dark">Release channel <span class="badge">custom theme</span></label>
+            <select
+              id="demo-dark"
+              name="demo-dark"
+              data-rt-select="all"
+              data-rt-select-id="demo-dark"
+              data-rt-select-search="true"
+              data-rt-select-bg="#101010"
+              data-rt-select-dropdown-bg="#101010"
+              data-rt-select-text="#ffffff"
+              data-rt-select-placeholder-color="#a3a3a3"
+              data-rt-select-border="#303030"
+              data-rt-select-focus="#ffffff"
+              data-rt-select-highlight-bg="#242424"
+              data-rt-select-highlight-color="#ffffff"
+              data-rt-select-selected-bg="#333333"
+              data-rt-select-selected-color="#ffffff"
+              data-rt-select-arrow="#ffffff"
+              data-rt-select-radius="14"
+              data-rt-select-dropdown-radius="16"
+              data-rt-select-dropdown-shadow="0 18px 44px rgba(0,0,0,.42)"
+            >
+              <option value="">Choose channel</option>
+              <option value="stable">Stable</option>
+              <option value="beta">Beta</option>
+              <option value="next">Next</option>
+              <option value="experimental">Experimental</option>
+              <option value="deprecated">Deprecated</option>
+            </select>
+            <div class="output" data-output="demo-dark">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Platform targeting</h2>
+          <p>Tests platform-level opt-in using <code>data-rt-select-platforms</code>.</p>
+
+          <div class="field">
+            <label for="demo-platform">Target platform <span class="badge">platforms: apple</span></label>
+            <select
+              id="demo-platform"
+              name="demo-platform"
+              data-rt-select
+              data-rt-select-id="demo-platform"
+              data-rt-select-platforms="apple"
+              data-rt-select-search="false"
+              data-rt-select-bg="#fffaf2"
+              data-rt-select-dropdown-bg="#fffaf2"
+              data-rt-select-text="#2a1800"
+              data-rt-select-border="#e0c28b"
+              data-rt-select-focus="#9b5c00"
+              data-rt-select-highlight-bg="#f6e3bf"
+              data-rt-select-selected-bg="#edd19d"
+              data-rt-select-radius="14"
+              data-rt-select-dropdown-radius="16"
+            >
+              <option value="">Choose platform</option>
+              <option value="windows">Windows</option>
+              <option value="macos">macOS</option>
+              <option value="ios">iOS</option>
+              <option value="android">Android</option>
+              <option value="linux">Linux</option>
+            </select>
+            <div class="output" data-output="demo-platform">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card full">
+          <h2>Multi-select</h2>
+          <p>Multi-select fields are always upgraded because the native multi-select control is inconsistent across browsers.</p>
+
+          <div class="field">
+            <label for="demo-multi">Features <span class="badge">always custom</span></label>
+            <select
+              id="demo-multi"
+              name="demo-multi"
+              multiple
+              placeholder="Choose features"
+              data-rt-select
+              data-rt-select-id="demo-multi"
+              data-rt-select-search="true"
+              data-rt-select-remove-item-button="true"
+              data-rt-select-placeholder-value="Choose features"
+              data-rt-select-search-placeholder="Search features"
+              data-rt-select-bg="#ffffff"
+              data-rt-select-text="#111111"
+              data-rt-select-border="#d0d5dd"
+              data-rt-select-focus="#6840c6"
+              data-rt-select-highlight-bg="#f4f0ff"
+              data-rt-select-highlight-color="#2d1a62"
+              data-rt-select-selected-bg="#ebe4ff"
+              data-rt-select-selected-color="#2d1a62"
+              data-rt-select-tag-bg="#6840c6"
+              data-rt-select-tag-color="#ffffff"
+              data-rt-select-tag-border="#6840c6"
+              data-rt-select-radius="16"
+              data-rt-select-dropdown-radius="16"
+              data-rt-select-dropdown-max-height="230"
+              data-rt-select-chip-gap="7"
+              data-rt-select-chip-padding-x="10"
+              data-rt-select-chip-padding-y="6"
+            >
+              <option value="windows-upgrade">Windows select upgrade</option>
+              <option value="native-fallback">Native fallback</option>
+              <option value="multi-select">Custom multi-select</option>
+              <option value="search">Searchable options</option>
+              <option value="theming">Attribute theming</option>
+              <option value="platform-targeting">Platform targeting</option>
+              <option value="public-api">Public JavaScript API</option>
+              <option value="dynamic-refresh">Dynamic refresh</option>
+              <option value="form-support">Form support</option>
+              <option value="validation-state">Validation state</option>
+            </select>
+            <div class="output" data-output="demo-multi">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Grouped options</h2>
+          <p>Tests optgroups, dropdown scrolling, search, selected states and custom hover styles.</p>
+
+          <div class="field">
+            <label for="demo-grouped">Documentation section <span class="badge">optgroup</span></label>
+            <select
+              id="demo-grouped"
+              name="demo-grouped"
+              data-rt-select
+              data-rt-select-id="demo-grouped"
+              data-rt-select-custom="true"
+              data-rt-select-search="true"
+              data-rt-select-placeholder-value="Choose section"
+              data-rt-select-radius="14"
+              data-rt-select-dropdown-radius="16"
+              data-rt-select-focus="#0f766e"
+              data-rt-select-highlight-bg="#ccfbf1"
+              data-rt-select-selected-bg="#99f6e4"
+            >
+              <option value="">Choose section</option>
+              <optgroup label="Getting started">
+                <option value="installation">Installation</option>
+                <option value="usage">Usage</option>
+                <option value="attributes">Attributes</option>
+              </optgroup>
+              <optgroup label="Advanced">
+                <option value="api">JavaScript API</option>
+                <option value="events">Events</option>
+                <option value="styling">Styling</option>
+                <option value="platforms">Platforms</option>
+              </optgroup>
+            </select>
+            <div class="output" data-output="demo-grouped">Value: —</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Validation and disabled state</h2>
+          <p>Tests required fields, invalid state, disabled state and form reset behaviour.</p>
+
+          <form id="demo-form">
+            <div class="field">
+              <label for="demo-required">Required field <span class="badge">required</span></label>
+              <select
+                id="demo-required"
+                name="demo-required"
+                required
+                data-rt-select="all"
+                data-rt-select-id="demo-required"
+                data-rt-select-search="false"
+                data-rt-select-invalid="#d92d20"
+                data-rt-select-focus="#d92d20"
+                data-rt-select-radius="14"
+              >
+                <option value="">Choose status</option>
+                <option value="not-started">Not started</option>
+                <option value="in-progress">In progress</option>
+                <option value="blocked">Blocked</option>
+                <option value="complete">Complete</option>
+              </select>
+              <div class="output" data-output="demo-required">Value: —</div>
+            </div>
+
+            <div class="field">
+              <label for="demo-disabled">Disabled field <span class="badge">disabled</span></label>
+              <select
+                id="demo-disabled"
+                name="demo-disabled"
+                disabled
+                data-rt-select="all"
+                data-rt-select-id="demo-disabled"
+                data-rt-select-bg-disabled="#eeeeee"
+                data-rt-select-radius="14"
+              >
+                <option value="disabled-option">Disabled option</option>
+                <option value="enabled-option">Enabled option</option>
+              </select>
+              <div class="output" data-output="demo-disabled">Value: —</div>
+            </div>
+
+            <div class="toolbar" style="box-shadow:none;margin:12px 0 0;padding:0;border:0;background:transparent">
+              <button type="submit">Submit form</button>
+              <button type="reset" class="secondary">Reset form</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="card full">
+          <h2>Native comparison</h2>
+          <p>These fields do not use <code>data-rt-select</code>. They are included only for comparing the browser default against rt-select.</p>
+
+          <div class="native-compare">
+            <div class="native-box">
+              <h3>Native single select</h3>
+              <select id="native-single">
+                <option value="">Choose option</option>
+                <option value="alpha">Alpha</option>
+                <option value="beta">Beta</option>
+                <option value="gamma">Gamma</option>
+              </select>
+            </div>
+
+            <div class="native-box">
+              <h3>Native multi-select</h3>
+              <select id="native-multi" multiple size="5">
+                <option value="alpha">Alpha</option>
+                <option value="beta">Beta</option>
+                <option value="gamma">Gamma</option>
+                <option value="delta">Delta</option>
+                <option value="epsilon">Epsilon</option>
+              </select>
+            </div>
+          </div>
+        </article>
+
+        <article class="card code-panel">
+          <div class="code-panel-header">
+            <h2>Live API state</h2>
+            <button type="button" class="secondary" data-action="log-state">Update state</button>
+          </div>
+          <pre data-state-output>{}</pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="../src/index.js"></script>
+    <script>
+      (function () {
+        var ids = [
+          "demo-default",
+          "demo-custom",
+          "demo-dark",
+          "demo-platform",
+          "demo-multi",
+          "demo-grouped",
+          "demo-required",
+          "demo-disabled",
+        ];
+
+        function formatValue(value) {
+          if (Array.isArray(value)) return value.length ? value.join(", ") : "—";
+          return value || "—";
+        }
+
+        function getSelectValue(select) {
+          if (!select) return "";
+          if (select.multiple) {
+            return Array.from(select.selectedOptions).map(function (option) {
+              return option.value;
+            });
+          }
+          return select.value;
+        }
+
+        function getRtValue(id) {
+          if (window.rtSelect && window.rtSelect.getValue) {
+            var value = window.rtSelect.getValue(id);
+            if (value !== null && value !== undefined) return value;
+          }
+          return getSelectValue(document.getElementById(id));
+        }
+
+        function updateOutput(id) {
+          var output = document.querySelector('[data-output="' + id + '"]');
+          if (!output) return;
+          output.textContent = "Value: " + formatValue(getRtValue(id));
+        }
+
+        function updateAllOutputs() {
+          ids.forEach(updateOutput);
+        }
+
+        function runtimeStatus() {
+          var target = document.querySelector("[data-runtime-status]");
+          if (!target) return;
+
+          if (!window.rtSelect) {
+            target.textContent = "rtSelect API not found. Check that ../src/index.js is loading.";
+            return;
+          }
+
+          var platform = window.rtSelect.platform ? window.rtSelect.platform() : {};
+          var active = window.rtSelect.ids ? window.rtSelect.ids() : [];
+          var skipped = window.rtSelect.skipped ? window.rtSelect.skipped() : [];
+          var errors = window.rtSelect.errors ? window.rtSelect.errors() : [];
+
+          target.textContent =
+            "api: available" +
+            "\nplatform: " +
+            JSON.stringify(platform) +
+            "\ncustom instances: " +
+            active.length +
+            "\nnative/skipped: " +
+            skipped.length +
+            "\nerrors: " +
+            (errors.length ? errors.join(" | ") : "none");
+        }
+
+        function updateStatePanel() {
+          var target = document.querySelector("[data-state-output]");
+          if (!target) return;
+
+          var state = {
+            runtime: window.rtSelect
+              ? {
+                  platform: window.rtSelect.platform ? window.rtSelect.platform() : null,
+                  ids: window.rtSelect.ids ? window.rtSelect.ids() : [],
+                  skipped: window.rtSelect.skipped ? window.rtSelect.skipped() : [],
+                  errors: window.rtSelect.errors ? window.rtSelect.errors() : [],
+                }
+              : null,
+            values: {},
+          };
+
+          ids.forEach(function (id) {
+            state.values[id] = getRtValue(id);
+          });
+
+          target.textContent = JSON.stringify(state, null, 2);
+          runtimeStatus();
+        }
+
+        function updateEverything() {
+          updateAllOutputs();
+          updateStatePanel();
+        }
+
+        function setRtValue(id, value, silent) {
+          if (window.rtSelect && window.rtSelect.setValue) {
+            window.rtSelect.setValue(id, value, !!silent);
+          }
+        }
+
+        document.addEventListener("change", function (event) {
+          if (!event.target || !event.target.matches("select")) return;
+          updateOutput(event.target.id);
+          updateStatePanel();
+        });
+
+        document.addEventListener("rtSelect:ready", updateEverything);
+        document.addEventListener("rtSelect:error", updateEverything);
+
+        document.querySelector('[data-action="set-demo-values"]').addEventListener("click", function () {
+          setRtValue("demo-default", "rt-select", true);
+          setRtValue("demo-custom", "dropdown", true);
+          setRtValue("demo-dark", "stable", true);
+          setRtValue("demo-platform", "macos", true);
+          setRtValue("demo-multi", ["windows-upgrade", "multi-select", "theming"], true);
+          setRtValue("demo-grouped", "api", true);
+          setRtValue("demo-required", "in-progress", true);
+          updateEverything();
+        });
+
+        document.querySelector('[data-action="clear-values"]').addEventListener("click", function () {
+          setRtValue("demo-default", "", true);
+          setRtValue("demo-custom", "", true);
+          setRtValue("demo-dark", "", true);
+          setRtValue("demo-platform", "", true);
+          setRtValue("demo-multi", [], true);
+          setRtValue("demo-grouped", "", true);
+          setRtValue("demo-required", "", true);
+          updateEverything();
+        });
+
+        document.querySelector('[data-action="refresh"]').addEventListener("click", function () {
+          if (window.rtSelect && window.rtSelect.refresh) window.rtSelect.refresh();
+          window.setTimeout(updateEverything, 80);
+        });
+
+        document.querySelector('[data-action="destroy"]').addEventListener("click", function () {
+          if (window.rtSelect && window.rtSelect.destroy) window.rtSelect.destroy();
+          window.setTimeout(updateEverything, 80);
+        });
+
+        document.querySelector('[data-action="init"]').addEventListener("click", function () {
+          if (window.rtSelect && window.rtSelect.init) window.rtSelect.init();
+          window.setTimeout(updateEverything, 160);
+        });
+
+        document.querySelector('[data-action="add-option"]').addEventListener("click", function () {
+          var select = document.getElementById("demo-custom");
+          var count = select.querySelectorAll("option").length;
+          var option = document.createElement("option");
+          option.value = "dynamic-option-" + count;
+          option.textContent = "Dynamic option " + count;
+          select.appendChild(option);
+          if (window.rtSelect && window.rtSelect.refresh) window.rtSelect.refresh();
+          window.setTimeout(updateEverything, 160);
+        });
+
+        document.querySelector('[data-action="log-state"]').addEventListener("click", updateStatePanel);
+
+        document.getElementById("demo-form").addEventListener("submit", function (event) {
+          event.preventDefault();
+          this.reportValidity();
+          updateEverything();
+        });
+
+        document.getElementById("demo-form").addEventListener("reset", function () {
+          window.setTimeout(updateEverything, 120);
+        });
+
+        updateEverything();
+        window.setTimeout(updateEverything, 250);
+        window.setTimeout(updateEverything, 1000);
+        window.addEventListener("load", function () {
+          window.setTimeout(updateEverything, 250);
+        });
+      })();
+    </script>
+  </body>
+</html>
